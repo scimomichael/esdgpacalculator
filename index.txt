@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="text-center py-5 mb-5">
+        <div class="container">
+            <h1 class="display-4">GPA Calculator</h1>
+            <p class="lead">Calculate your high school GPA with ease and precision.</p>
+        </div>
+    </header>
+    <main class="container mb-5">
+        <div id="semesters-container">
+            <div class="semester shadow p-4 mb-5 bg-white rounded position-relative">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-4">Semester 1</h3>
+                    <button class="btn btn-link text-danger" onclick="confirmRemoveSemester(1)"><i class="fas fa-trash"></i></button>
+                </div>
+                <div id="classes-container-1" class="classes-container">
+                    <div class="class-item form-row align-items-end mb-3">
+                        <div class="col-md-4 mb-3">
+                            <label for="class-name-1-1">Class Name</label>
+                            <input type="text" class="form-control" id="class-name-1-1" placeholder="Enter class name">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="class-grade-1-1">Class Grade</label>
+                            <select class="form-control" id="class-grade-1-1">
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="B-">B-</option>
+                                <option value="C+">C+</option>
+                                <option value="C">C</option>
+                                <option value="C-">C-</option>
+                                <option value="D+">D+</option>
+                                <option value="D">D</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="class-type-1-1">Class Type</label>
+                            <select class="form-control" id="class-type-1-1">
+                                <option value="Regular">Regular</option>
+                                <option value="Honors">Honors</option>
+                                <option value="AP">AP</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3 text-center">
+                            <button class="btn btn-outline-danger" onclick="removeClass(this)"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-secondary" onclick="addClass(1)"><i class="fas fa-plus"></i> Add Class</button>
+                    <button class="btn btn-outline-info" onclick="calculateSemesterGPA(1)"><i class="fas fa-calculator"></i> Calculate Semester GPA</button>
+                </div>
+                <div class="text-center mt-2">
+                    <button class="btn btn-link text-secondary" onclick="confirmClearSemester(1)"><i class="fas fa-eraser"></i> Clear Semester</button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary btn-lg mb-3" onclick="addSemester()"><i class="fas fa-plus-circle"></i> Add Semester</button>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-success btn-lg" onclick="calculateCumulativeGPA()"><i class="fas fa-calculator"></i> Calculate Cumulative GPA</button>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-light" onclick="openSettings()"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+        <div id="result" class="text-center mt-5"></div>
+    </main>
+    <footer class="bg-light text-center py-4">
+        <div class="container">
+            <p class="mb-0">&copy; 2024 GPA Calculator. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for settings -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="decimal-places">Decimal Places for GPA</label>
+                        <select class="form-control" id="decimal-places">
+                            <option value="1">1 Decimal Place</option>
+                            <option value="2">2 Decimal Places</option>
+                            <option value="3" selected>3 Decimal Places</option>
+                        </select>
+                    </div>
+                    <div class="text-start mt-4">
+                        <button class="btn btn-danger" onclick="confirmClearAll()">Clear All Data</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="applySettings()">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for importing previous GPAs -->
+    <div class="modal fade" id="importGPAModal" tabindex="-1" aria-labelledby="importGPAModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importGPAModalLabel">Import Previous GPAs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="previous-gpas-container">
+                        <!-- GPA inputs will be dynamically added here -->
+                    </div>
+                    <button class="btn btn-outline-secondary mt-3" onclick="addPreviousGPAInput()">Add Another GPA</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="importPreviousGPAs()">Import GPAs</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for confirmation and alerts -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmationMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmAction">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
