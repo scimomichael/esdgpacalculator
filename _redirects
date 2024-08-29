@@ -1,0 +1,10 @@
+# Redirect from old paths to new ones
+/old-page        /new-page       301
+/about-us        /about          302
+
+# Custom 404 page
+/*               /404.html       404
+
+# Rewrite URL without changing the URL in the browser (useful for Single Page Apps)
+# This means any unmatched routes will be served by index.html
+/*               /index.html     200
