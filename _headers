@@ -1,0 +1,14 @@
+# Global headers applied to all paths
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Content-Security-Policy: default-src 'self'
+  Referrer-Policy: no-referrer
+
+# Cache images for better performance
+/images/*
+  Cache-Control: public, max-age=86400
+
+# Add custom headers to a specific page
+/about
+  X-Robots-Tag: noindex
